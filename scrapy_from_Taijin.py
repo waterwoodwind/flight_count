@@ -55,7 +55,16 @@ for td in match_tr:
     list_flt_table.append(list_td)
     print "列数：%s"%(len(match_td))
 
+list_del_table = []
 for index,item in  enumerate(list_flt_table):
+    if item[1] == u'航班取消':
+        continue
+    elif item[2] <> u'PEK' and item[5] <> u'PEK':
+        continue
+    else:
+        list_del_table.append(item)
+
+for index, item in enumerate(list_del_table):
     print index, item
 
 
