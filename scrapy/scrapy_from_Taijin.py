@@ -42,7 +42,7 @@ pattern_td = re.compile(r'<td.*?>.*?</td>', re.I | re.S)
 
 pattern_sub = re.compile(r'<.*?>')
 list_flt_table = []
-list_index = [0,3,5,8,9,10]
+list_index = [0,2,3,5,8,9,10]
 for td in match_tr:
     match_td = re.findall(pattern_td, td)
     list_td = []
@@ -57,9 +57,9 @@ for td in match_tr:
 
 list_del_table = []
 for index,item in  enumerate(list_flt_table):
-    if item[1] == u'航班取消':
+    if item[2] == u'航班取消':
         continue
-    elif item[2] <> u'PEK' and item[5] <> u'PEK':
+    elif item[3] <> u'PEK' and item[6] <> u'PEK':
         continue
     else:
         list_del_table.append(item)
