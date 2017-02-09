@@ -18,4 +18,7 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    #beijing_flight_count
+    url(r'^$', 'beijing_flight_count.views.home', name='home'),
+    url(r'^beijing_flights$', 'beijing_flight_count.views.beijing_flights')
 ]
