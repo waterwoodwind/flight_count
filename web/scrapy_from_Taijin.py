@@ -1,4 +1,6 @@
 #coding=utf-8
+from flight_count.wsgi import *
+from beijing_flight_count.models import BeijingFlights
 import requests
 import urllib
 import re
@@ -64,9 +66,18 @@ for index,item in  enumerate(list_flt_table):
     else:
         list_del_table.append(item)
 
+querysetlist = []
 for index, item in enumerate(list_del_table):
     print index, item
+    querysetlist.append(BeijingFlights(date=item[0],
+                                       flight_number=item[1],
+                                       ac_number=item[2],
+                                       departure_airfield=item[3],
+                                       departure_datetime=item[4],
+                                       arrival_datetime=item[5],
+                                       arrival_airfield=item[6]))
 
+BeijingFlights.objects.bulk_create(querysetlist)
 
 '''
 pattern_td = re.compile(r'>.+<')
