@@ -153,3 +153,6 @@ fabric.properties
 .idea/inspectionProfiles/Project_Default.xml
 .idea/misc.xml
 .idea/flignt_count.iml
+*.db
+*.sqlite3
+web/beijing_flight_count/migrations
