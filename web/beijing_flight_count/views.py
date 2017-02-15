@@ -18,5 +18,5 @@ def beijing_flights(request):
     upload_data = []
     for item in list_data:
         upload_data.append(item['fields'])
-
-    return HttpResponse(upload_data)
+    upload_data = json.dumps(upload_data)
+    return render(request, 'beijing_flights.html', {'json_data': upload_data})
