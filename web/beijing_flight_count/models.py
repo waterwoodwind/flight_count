@@ -61,6 +61,9 @@ class ActualTimetable(models.Model):
     actual_location = models.ForeignKey(Location,verbose_name=u'地点')
     actual_scheduled_check = models.ForeignKey(Check_Option, verbose_name=u'是否定检')
 
+    def __unicode__(self):
+        return self.actual_ac_number.name + "  " + str(self.actual_date) + "  " + self.actual_scheduled_check.name
+
 class PlanTimetable(models.Model):
     plan_ac_number = models.ForeignKey(Ac_Number,
                                  verbose_name=u'机号')
