@@ -53,6 +53,8 @@ class BeijingFlights(models.Model):
     arrival_datetime = models.DateTimeField(verbose_name=u'落地时间')
     arrival_airfield = models.CharField(max_length=20,
                                         verbose_name=u'落地机场')
+    def __unicode__(self):
+        return str(self.date) + self.ac_number
 
 class ActualTimetable(models.Model):
     actual_ac_number = models.ForeignKey(Ac_Number,
