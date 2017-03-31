@@ -6,8 +6,8 @@ import urllib
 import re
 
 params = {
-    'from_date':'20170326',
-    'to_date':'20170327',
+    'from_date':'20170330',
+    'to_date':'20170330',
     'dep_apt':'',
     'arr_apt':'',
     'flt_id':'',
@@ -43,6 +43,7 @@ print len(match_tr)
 pattern_td = re.compile(r'<td.*?>.*?</td>', re.I | re.S)
 
 pattern_sub = re.compile(r'<.*?>')
+
 list_flt_table = []
 list_index = [0,2,3,5,8,9,10]
 for td in match_tr:
@@ -69,13 +70,21 @@ for index,item in  enumerate(list_flt_table):
 querysetlist = []
 for index, item in enumerate(list_del_table):
     print index, item
-    querysetlist.append(BeijingFlights(date=item[0],
+    if not BeijingFlights.objects.filter(date=item[0],
                                        flight_number=item[1],
                                        ac_number=item[2],
                                        departure_airfield=item[3],
                                        departure_datetime=item[4],
                                        arrival_datetime=item[5],
-                                       arrival_airfield=item[6]))
+                                       arrival_airfield=item[6]).exists():
+
+        querysetlist.append(BeijingFlights(date=item[0],
+                                           flight_number=item[1],
+                                           ac_number=item[2],
+                                           departure_airfield=item[3],
+                                           departure_datetime=item[4],
+                                           arrival_datetime=item[5],
+                                           arrival_airfield=item[6]))
 
 BeijingFlights.objects.bulk_create(querysetlist)
 

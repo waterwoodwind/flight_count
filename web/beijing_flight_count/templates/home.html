@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% block maincontents %}
+<div class="container-fluid">
+    <button id="reset_filter" class="intext-btn">
+        重置筛选
+    </button>
+    <br>
+    <button id="export-file" class="intext-btn">
+        导出为csv文件
+    </button>
+    <br>
+    <div id="example"></div>
+</div><!-- /.container -->
+<script>
+var data = new Array();
+data = {{ json_data | safe}};
+var container = document.getElementById('example');
+var hot = new Handsontable(container, {
+  data: data,
+  rowHeaders: true,
+  colHeaders: ['机号','上次洗散热器日期','上次洗散热器地点','上次洗散热器定检','北京落地次数','北京过夜次数','北京运行总班次','计划下次日期','计划下次地点','计划是否定检'],
+  columns:[
+    {data: 'ac_number'},
+    {data: 'actual_date'},
+    {data: 'actual_location'},
+    {data: 'actual_scheduled_check'},
+    {data: 'total_count'},
+    {data: 'night_count'},
+    {data: 'all_count'},
+    {data: 'plan_date'},
+    {data: 'plan_location'},
+    {data: 'plan_scheduled_check'}
+  ],
+  dropdownMenu: ['filter_by_condition', 'filter_by_value', 'filter_action_bar'],
+  columnSorting: {
+    column: 6,
+    sortOrder: false
+  },
+  readOnly: true,
+  filters: true,
+  height: getHeight()
+});
+
+function getHeight() {
+        return $(window).height() - $('nav').outerHeight(true) * 2;
+    }
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var some_day = new Date();
+    var str_today = formatDate(some_day);
+    some_day = new Date();
+    some_day.setDate(some_day.getDate()-1);
+    var str_yesterday = formatDate(some_day);
+    some_day = new Date();
+    some_day.setDate(some_day.getDate()-7);
+    var str_last_7_day = formatDate(some_day);
+    some_day = new Date();
+    some_day.setDate(1);
+    var str_this_month_first_day = formatDate(some_day);
+
+    var example1 = document.getElementById('example');
+    var buttons = {
+        today: document.getElementById('today'),
+        yesterday: document.getElementById('yesterday'),
+        last_7_day: document.getElementById('last_7_day'),
+        this_month: document.getElementById('this_month'),
+        file: document.getElementById('export-file'),
+        all: document.getElementById('all'),
+        reset_filter: document.getElementById('reset_filter')
+    };
+
+    var exportPlugin = hot.getPlugin('exportFile');
+    hot.getPlugin('filters').filter();
+    buttons.file.addEventListener('click', function() {
+        exportPlugin.downloadFile('csv', {
+                filename: '北京起降时刻表',
+                columnHeaders: true,
+                range: [0, 0, 65536, 13]
+            }
+        );
+    });
+    buttons.today.addEventListener('click', function() {
+        hot.getPlugin('filters').addFormula(0, 'between', [str_today, str_today]);
+        hot.getPlugin('filters').filter();
+    });
+    buttons.yesterday.addEventListener('click', function() {
+        hot.getPlugin('filters').addFormula(0, 'between', [str_yesterday, str_yesterday]);
+        hot.getPlugin('filters').filter();
+    });
+    buttons.last_7_day.addEventListener('click', function() {
+        hot.getPlugin('filters').addFormula(0, 'between', [str_last_7_day, str_today]);
+        hot.getPlugin('filters').filter();
+    });
+    buttons.this_month.addEventListener('click', function() {
+        hot.getPlugin('filters').addFormula(0, 'between', [str_this_month_first_day, str_today]);
+        hot.getPlugin('filters').filter();
+    });
+    buttons.all.addEventListener('click', function() {
+        hot.getPlugin('filters').removeFormulas(0);
+        hot.getPlugin('filters').filter();
+    });
+    buttons.reset_filter.addEventListener('click', function() {
+        hot.getPlugin('filters').clearFormulas();
+        hot.getPlugin('filters').filter();
+    });
+  
+  
+    function bindDumpButton() {
+        if (typeof Handsontable === "undefined") {
+            return;
+        }
+        Handsontable.Dom.addEvent(document.body, 'click', function (e) {
+            var element = e.target || e.srcElement;
+            if (element.nodeName == "BUTTON" && element.name == 'dump') {
+                var name = element.getAttribute('data-dump');
+                var instance = element.getAttribute('data-instance');
+                var hot = window[instance];
+                console.log('data of ' + name, hot.getData());
+            }
+        });
+    }
+    bindDumpButton();
+    
+    function formatDate(d) {  
+    var D=['00','01','02','03','04','05','06','07','08','09']  
+    with (d || new Date) return [getFullYear(), D[getMonth()+1]||getMonth()+1, D[getDate()]||getDate()].join('-');  
+    }
+});
+
+
+
+</script>
+{% endblock %}

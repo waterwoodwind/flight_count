@@ -30,6 +30,16 @@ def import_actual_begin():
                                        actual_location=loc,
                                        actual_scheduled_check=check)
 
+def import_plan_begin():
+    ac_all = Ac_Number.objects.all()
+    for ac in ac_all:
+        loc = Location.objects.get(name=u"重庆")
+        check = Check_Option.objects.get(name=u"是")
+        PlanTimetable.objects.create(plan_ac_number=ac,
+                                       plan_date="2017-04-01",
+                                       plan_location=loc,
+                                       plan_scheduled_check=check)
+
 if __name__ == "__main__":
-    import_actual_begin()
+    import_plan_begin()
     print('Done!')
