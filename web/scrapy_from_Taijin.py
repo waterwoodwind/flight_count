@@ -1,5 +1,4 @@
 #coding=utf-8
-from flight_count.wsgi import *
 from beijing_flight_count.models import BeijingFlights
 import requests
 import urllib
