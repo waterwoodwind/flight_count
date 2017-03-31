@@ -4,10 +4,14 @@ from beijing_flight_count.models import BeijingFlights
 import requests
 import urllib
 import re
+from datetime import date
 
+print date.today()
+str_date_scrapy = date.today().strftime('%Y%m%d')
+str_date = date.today().strftime('%Y-%m-%d')
 params = {
-    'from_date':'20170330',
-    'to_date':'20170330',
+    'from_date':str_date_scrapy,
+    'to_date':str_date_scrapy,
     'dep_apt':'',
     'arr_apt':'',
     'flt_id':'',
@@ -64,6 +68,16 @@ for index,item in  enumerate(list_flt_table):
         continue
     elif item[3] <> u'PEK' and item[6] <> u'PEK':
         continue
+    elif len(item[4]) == 0 or len(item[5]) == 0 or len(item[4]) == 7 or len(item[5]) == 7:
+        continue
+    elif len(item[4]) == 9 or len(item[5]) == 9:#关门时间
+        continue
+    elif len(item[4]) == 5 or len(item[5]) == 5:
+        if len(item[4]) == 5:
+            item[4] = str_date + ' ' + item[4]
+        if len(item[5]) == 5:
+            item[5] = str_date + ' ' + item[5]
+        list_del_table.append(item)
     else:
         list_del_table.append(item)
 
