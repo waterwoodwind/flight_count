@@ -43,7 +43,6 @@ match_tr = re.findall(pattern_tr, table_str)
 
 #for item in match_tr:
 #    print item
-print len(match_tr)
 pattern_td = re.compile(r'<td.*?>.*?</td>', re.I | re.S)
 
 pattern_sub = re.compile(r'<.*?>')
@@ -60,7 +59,7 @@ for td in match_tr:
         if index in list_index:
             list_td.append(match_td[index])
     list_flt_table.append(list_td)
-    print "列数：%s"%(len(match_td))
+
 
 list_del_table = []
 for index,item in  enumerate(list_flt_table):
@@ -83,7 +82,6 @@ for index,item in  enumerate(list_flt_table):
 
 querysetlist = []
 for index, item in enumerate(list_del_table):
-    print index, item
     if not BeijingFlights.objects.filter(date=item[0],
                                        flight_number=item[1],
                                        ac_number=item[2],
