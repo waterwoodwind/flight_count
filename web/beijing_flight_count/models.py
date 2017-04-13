@@ -72,3 +72,6 @@ class PlanTimetable(models.Model):
     plan_date = models.DateField(u'日期')
     plan_location = models.ForeignKey(Location,verbose_name=u'地点')
     plan_scheduled_check = models.ForeignKey(Check_Option, verbose_name=u'是否定检')
+
+    def __unicode__(self):
+        return self.plan_ac_number.name + "  " + str(self.plan_date) + "  " + self.plan_scheduled_check.name
