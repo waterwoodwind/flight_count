@@ -5,10 +5,11 @@ import requests
 import urllib
 import re
 from datetime import date
-
+import datetime
 print date.today()
-str_date_scrapy = date.today().strftime('%Y%m%d')
-str_date = date.today().strftime('%Y-%m-%d')
+yesterday = date.today() - datetime.timedelta(days=1)
+str_date_scrapy = yesterday.strftime('%Y%m%d')
+str_date = yesterday.strftime('%Y-%m-%d')
 params = {
     'from_date':str_date_scrapy,
     'to_date':str_date_scrapy,
