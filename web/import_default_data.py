@@ -1,3 +1,4 @@
+#python 2.7 django 1.x
 #coding=utf-8
 import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "flight_count.settings")
@@ -26,7 +27,7 @@ def import_actual_begin():
         loc = Location.objects.get(name=u"重庆")
         check = Check_Option.objects.get(name=u"是")
         ActualTimetable.objects.create(actual_ac_number=ac,
-                                       actual_date="2019-04-01",
+                                       actual_date="2022-04-15",
                                        actual_location=loc,
                                        actual_scheduled_check=check)
 
@@ -42,5 +43,5 @@ def import_plan_begin():
 
 if __name__ == "__main__":
     import_actual_begin()
-    import_plan_begin()
+    #import_plan_begin()
     print('Done!')
