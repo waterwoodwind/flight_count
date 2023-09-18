@@ -6,7 +6,7 @@ import urllib
 import re
 from datetime import date
 import datetime
-print date.today()
+#print date.today()
 yesterday = date.today() - datetime.timedelta(days=1)
 str_date_scrapy = yesterday.strftime('%Y%m%d')
 str_date = yesterday.strftime('%Y-%m-%d')
@@ -24,19 +24,21 @@ params = {
 }
 post_data = urllib.urlencode(params)
 
-r = requests.post("http://10.10.102.102/oracle/busi_his_flt_query.asp", data=params)
+cookie = {"Cookie": 'ASPSESSIONIDSSSTTBBD=JPDBHJOAFGCFOBFLMADEIBHA'}
+
+r = requests.post("http://10.10.102.102/oracle/busi_his_flt_query.asp", data=params, cookies=cookie)
 r.encoding = 'gb2312'
 res = r.text
-#print(res)
+print(res)
 
 pattern = re.compile(r'<table border=1.*>(\n|.)*</table>')
 match = re.search(pattern, res)
 if match:
-    print type(match.group())
+    #print type(match.group())
     #print match.group()
     table_str = match.group()
 else:
-    print '未找到'
+    #print '未找到'
     exit()
 
 pattern_tr = re.compile(r'<tr bgColor=#ACDEA4.*?</tr>', re.S)
