@@ -156,3 +156,4 @@ fabric.properties
 *.db
 *.sqlite3
 web/beijing_flight_count/migrations
+web/source.txt
